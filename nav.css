@@ -1,0 +1,63 @@
+nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-start;
+}
+
+.tab {
+    cursor: pointer;
+    border: 1px solid var(--background);
+    font-size: 100%;
+    font-family: inherit;
+    outline: none;
+    
+    background-color: #848586;
+    /* margin: 1px; */
+    color: white;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.tab:hover {
+    background-color: #afafaf;
+}
+
+.active-tab {
+    background-color: #afafaf;
+}
+/* not here */
+.list {
+    display: none;
+}
+
+.active-list {
+    display: block;
+}
+/*=========*/
+.tab-today {
+    flex-basis: 1%;
+    flex-grow: 1;
+    text-align: center;
+    flex-shrink: 3;
+}
+
+.tab-tomorrow {
+    flex-basis: 1%;
+    flex-grow: 1;
+    text-align: center;
+    flex-shrink: 3;
+}
+
+.tab-week {
+    text-align: right;
+    flex-grow: 3;
+    flex-shrink: 3;
+}
+
+.tab-month {
+    text-align: right;
+    flex-grow: 5;
+    flex-shrink: 1;
+    min-width: 50vw;
+}

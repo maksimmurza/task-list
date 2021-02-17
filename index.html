@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <script type="module" src="script.js"></script>
+</head>
+<body>
+    <nav>
+        <button class="tab tab-today active-tab">Today</button>
+        <button class="tab tab-tomorrow">Tomorrow</button>
+        <button class="tab tab-week">Week</button>
+        <button class="tab tab-month">Month</button>
+    </nav>
+    <main>
+        <div class="list list-today active-list"></div>
+        <div class="list list-tomorrow"></div>
+        <div class="list list-week"></div>
+        <div class="list list-month"></div>
+        <form class="new">
+            <input type="text" class="input" placeholder="Add new...">
+            <button class="add fas fa-plus"></button>
+        </form>
+    </main>
+</body>
+</html>

@@ -1,0 +1,88 @@
+@import url('./nav.css');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+
+    --red: #721817;
+    --blue: #29335C;
+    --pastel: #f4f1de;
+    --grey: #BAA898;
+    --darker: #848586;
+    --green: #04F06A;
+
+    --background: white;
+
+    
+    color: var(--darker);    
+}
+
+* {
+    margin: 0;
+}
+
+*, ::before, ::after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 1em;
+}
+
+.header {
+    margin: 5px 0 15px 0;
+}
+
+.task {
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 25%;
+    min-width: 200px;
+}
+
+.new {
+    max-width: 25%;
+    min-width: 200px;
+
+    /* Vertical align inside this block */
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.task:hover .button {
+    visibility: visible;
+}
+
+main {
+    padding-top: 15px;
+}
+
+.input, .input:active {
+    border: none;
+    outline: none;
+    font-size: inherit;
+    color: inherit;
+    padding: 10px;
+}
+
+.add, .delete {
+    cursor: pointer;
+    border: none;
+    font-size: 100%;
+    font-family: inherit;
+    outline: none;
+    color: inherit;
+    background-color: white;
+    float: right;
+}
+
+.add:hover {
+    color: var(--green);
+}
+
+.delete:hover {
+    color: var(--red);
+}
