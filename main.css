@@ -52,8 +52,12 @@ body {
     vertical-align: middle;
 }
 
-.task:hover .button {
+.task:hover .delete {
     visibility: visible;
+}
+
+.delete {
+    visibility: hidden;
 }
 
 main {
@@ -68,7 +72,8 @@ main {
     padding: 10px;
 }
 
-.add, .delete {
+.add, .delete, .check {
+    display: inline;
     cursor: pointer;
     border: none;
     font-size: 100%;
@@ -85,4 +90,21 @@ main {
 
 .delete:hover {
     color: var(--red);
+}
+
+.check {
+    color: gray;
+    font-size: 120%;
+    float: left;
+    padding-left: 0;
+    padding-right: 10pxs;
+    /* margin-bottom: 15px; */
+}
+
+.check:hover {
+    color: darkslategray;
+}
+
+.check:active {
+    color: var(--green)
 }
