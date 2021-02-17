@@ -7,34 +7,29 @@ nav {
 
 .tab {
     cursor: pointer;
-    border: 1px solid var(--background);
+    border: 1px solid black;
     font-size: 100%;
     font-family: inherit;
     outline: none;
     
-    background-color: #848586;
-    /* margin: 1px; */
-    color: white;
+    background-color: transparent;
+    color: black;
     font-weight: 600;
     padding: 10px;
 }
 
+.tab + * {
+    border-left: none;
+}
+
 .tab:hover {
-    background-color: #afafaf;
+    text-decoration: underline;
 }
 
 .active-tab {
-    background-color: #afafaf;
-}
-/* not here */
-.list {
-    display: none;
+    text-decoration: underline;
 }
 
-.active-list {
-    display: block;
-}
-/*=========*/
 .tab-today {
     flex-basis: 1%;
     flex-grow: 1;
@@ -50,14 +45,16 @@ nav {
 }
 
 .tab-week {
+    flex-basis: 130px;
     text-align: right;
     flex-grow: 3;
-    flex-shrink: 3;
+    flex-shrink: 2;
 }
 
 .tab-month {
     text-align: right;
     flex-grow: 5;
+    flex-basis: 320px;
     flex-shrink: 1;
-    min-width: 50vw;
 }
+

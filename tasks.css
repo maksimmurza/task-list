@@ -1,0 +1,67 @@
+.task {
+    border: 1px solid grey;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    max-width: 20%;
+    min-width: 300px;
+    overflow: hidden;
+}
+
+.task:hover {
+    border-color: black;
+}
+
+.task:hover .delete {
+    visibility: visible;
+}
+
+.delete {
+    visibility: hidden;
+}
+
+.delete, .check {
+    display: inline;
+    cursor: pointer;
+    border: none;
+    font-size: 100%;
+    font-family: inherit;
+    outline: none;
+    color: grey;
+    background-color: white;
+    float: right;
+}
+
+.delete:hover {
+    color: firebrick;
+}
+
+.check {
+    font-size: 120%;
+    float: left;
+    padding-left: 0;
+    padding-right: 10px;
+}
+
+.check:hover {
+    color: darkslategray;
+}
+
+.check:active {
+    color: var(--green)
+}
+
+.list {
+    display: none;
+}
+
+.active-list {
+    max-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-self: flex-start;
+    overflow-x: auto;
+}

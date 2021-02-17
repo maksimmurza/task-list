@@ -22,6 +22,13 @@ function addNewTask(event) {
     newTask.classList.add('task');
     deleteButton.classList.add('delete', 'fas', 'fa-trash');
     checkboxButton.classList.add('check', 'far', 'fa-check-circle');
+
+    if(!input.validity.valid && !input.value.replace(/\s/g, '').length) {
+        alert("Name can not be empty and must have a characters");
+        input.value = '';
+        return;
+    }
+
     taskName.textContent = input.value;
     input.value = '';
     newTask.appendChild(checkboxButton);
