@@ -1,6 +1,5 @@
 @import url('./navigation.css');
-@import url('./responsive.css');
-@import url('./input.css');
+@import url('./controls.css');
 @import url('./tasks.css');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 

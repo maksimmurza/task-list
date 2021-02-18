@@ -58,3 +58,29 @@ nav {
     flex-shrink: 1;
 }
 
+@media (max-width: 640px) {
+    .tab-month {
+        border-left: 1px solid black;
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 320px) {
+    .tab-week {
+        border-left: 1px solid black;
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 190px) {
+    .tab-tomorrow {
+        border-left: 1px solid black;
+        border-bottom: none;
+        text-align: left;
+    }
+
+    .tab-today, .tab-month, .tab-week {
+        text-align: left;
+    }
+}
+

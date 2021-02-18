@@ -1,4 +1,8 @@
 .task {
+
+    display:  flex;
+    flex-direction: row;
+    align-items: center;
     border: 1px solid grey;
     border-radius: 15px;
     padding: 10px;
@@ -7,6 +11,13 @@
     max-width: 20%;
     min-width: 300px;
     overflow: hidden;
+}
+
+.task-name {
+    /* Name is growing and delete button displayed at the end without float */
+    flex-grow: 2;
+    max-width: 80%;
+    overflow-x: visible;
 }
 
 .task:hover {
@@ -21,7 +32,7 @@
     visibility: hidden;
 }
 
-.delete, .check {
+.delete, .complete {
     display: inline;
     cursor: pointer;
     border: none;
@@ -30,25 +41,23 @@
     outline: none;
     color: grey;
     background-color: white;
-    float: right;
 }
 
 .delete:hover {
     color: firebrick;
 }
 
-.check {
+.complete {
     font-size: 120%;
-    float: left;
     padding-left: 0;
     padding-right: 10px;
 }
 
-.check:hover {
+.complete:hover {
     color: darkslategray;
 }
 
-.check:active {
+.complete:active {
     color: var(--green)
 }
 

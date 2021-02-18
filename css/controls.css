@@ -1,0 +1,66 @@
+.controls {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+    /* min-width: 200px; */
+    height: 25%;
+}
+
+.new-task-form {
+    margin: 0 auto;
+    width: 22%;
+    min-width: 250px;
+
+    /* Prevent border overflow by input field */
+    padding-left: 15px;
+
+    border: 1px solid black;
+    border-radius: 20px;
+    
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+}
+
+.task-name-input, .task-name-input:active {
+    flex-grow: 1;
+
+    /* Cause browser give width to input element by default and it's prevent shrinking */
+    min-width: 85%;
+    
+    border: none;
+    outline: none;
+    font-size: inherit;
+    color: inherit;
+    padding: 10px;
+    color: black;
+}
+
+.add-task-button {
+    padding: 0px;
+    margin-right: 15px;
+    cursor: pointer;
+    border: none;
+    font-size: 110%;
+    outline: none;
+    background-color: white;
+    color: gray;
+}
+
+.add-task-button:hover {
+    color: black;
+}
+
+/* media q. in spec. file doesn't work correctly */
+@media (max-width: 320px) {
+    .new-task-form {
+        min-width: 100%;
+    }
+
+    .task-name-input, .task-name-input:active {
+        min-width: 70%;
+    }
+
+}
