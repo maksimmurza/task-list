@@ -43,10 +43,12 @@ function addNewTask(event) {
     newTask.classList.add('task');
     taskName.classList.add('task-name');
     deleteButton.classList.add('delete', 'fas', 'fa-trash');
-    completeButton.classList.add('complete', 'far', 'fa-check-circle');
+    completeButton.classList.add('task-complete-button', 'far', 'fa-check-circle');
 
     taskName.textContent = input.value;
     input.value = '';
+
+    newTask.setAttribute('graggable', true);
 
     newTask.appendChild(completeButton);
     newTask.appendChild(taskName);
@@ -63,11 +65,5 @@ function deleteTask(event) {
 }
 
 function completeTask(event) {
-    if(event.target.style.color != 'green') {
-        event.target.style.color = 'green';
-        event.target.parentNode.querySelector('span').style.textDecoration = 'line-through';
-    } else {
-        event.target.style.color = 'grey';
-        event.target.parentNode.querySelector('span').style.textDecoration = 'none';
-    }
+    event.target.parentNode.classList.toggle('complete');
 }

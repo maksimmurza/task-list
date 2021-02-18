@@ -1,8 +1,24 @@
-.task {
+.list {
+    display: none;
+}
 
+.active-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    /* align-items: flex-start; */
+    /* justify-items: stretch; */
+
+    max-height: 60vh;
+    overflow-x: auto;
+}
+
+.task {
     display:  flex;
     flex-direction: row;
     align-items: center;
+
     border: 1px solid grey;
     border-radius: 15px;
     padding: 10px;
@@ -11,13 +27,16 @@
     max-width: 20%;
     min-width: 300px;
     overflow: hidden;
+
+    /* justify-self: flex-start; */
 }
 
 .task-name {
     /* Name is growing and delete button displayed at the end without float */
     flex-grow: 2;
     max-width: 80%;
-    overflow-x: visible;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 .task:hover {
@@ -32,7 +51,7 @@
     visibility: hidden;
 }
 
-.delete, .complete {
+.delete, .task-complete-button {
     display: inline;
     cursor: pointer;
     border: none;
@@ -47,30 +66,31 @@
     color: firebrick;
 }
 
-.complete {
+.task-complete-button {
     font-size: 120%;
     padding-left: 0;
     padding-right: 10px;
 }
 
-.complete:hover {
+.task-complete-button:hover {
     color: darkslategray;
 }
 
-.complete:active {
+.task-complete-button:active {
     color: var(--green)
 }
 
-.list {
-    display: none;
+.complete .task-name {
+    text-decoration: line-through;
 }
 
-.active-list {
-    max-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-self: flex-start;
-    overflow-x: auto;
+.complete .task-complete-button {
+    color: green;
+}
+
+@media (max-width: 320px) {
+    .active-list {
+        overflow-x: unset;
+        overflow-y: auto;
+    }
 }
