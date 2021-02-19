@@ -42,13 +42,13 @@ function addNewTask(event) {
 
     newTask.classList.add('task');
     taskName.classList.add('task-name');
-    deleteButton.classList.add('delete', 'fas', 'fa-trash');
+    deleteButton.classList.add('task-delete-button', 'fas', 'fa-trash');
     completeButton.classList.add('task-complete-button', 'far', 'fa-check-circle');
 
     taskName.textContent = input.value;
     input.value = '';
 
-    newTask.setAttribute('graggable', true);
+    newTask.setAttribute('draggable', true);
 
     newTask.appendChild(completeButton);
     newTask.appendChild(taskName);
