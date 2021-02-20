@@ -6,7 +6,8 @@
 :root {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    color: var(--darker);    
+    --task-min-width: 300px;
+    --border-margin: 1em;
 }
 
 * {
@@ -18,14 +19,38 @@
 }
 
 body {
-    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    position: relative;
+    margin: var(--border-margin);
     height: calc(100vh - 2em);
 }
 
-.header {
-    margin: 5px 0 15px 0;
+nav {
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-start;
 }
 
 main {
-    padding-top: 15px;
+    flex-grow: 1;
+    flex-shrink: 3;
+
+    padding: 15px 0 15px;
+    height: 65%;
+    position: relative;
+}
+
+section {
+    flex-shrink: 1;
+
+    height: 25%;
+    min-height: 20%;
+
+    z-index: 2;
 }

@@ -1,12 +1,11 @@
-import {tabs, tabsAreas, addButton, input} from './init.js';
-//import * as  taskList from './model.js';
+import {main, tabs, tabsAreas, addButton, input} from './init.js';
 
+document.addEventListener('DOMContentLoaded', init);
 
-document.addEventListener('DOMContentLoaded', main);
-
-function main() {
+function init() {
     addButton.addEventListener('click', addNewTask);
     tabs.forEach(tab => {tab.addEventListener('click', () => {openTab(tab)})});
+    main.addEventListener('wheel', scrollHorizontally);
 }
 
 function openTab(tab) {
@@ -66,4 +65,14 @@ function deleteTask(event) {
 
 function completeTask(event) {
     event.target.parentNode.classList.toggle('complete');
+}
+
+function scrollHorizontally(event) {
+    if(window.innerWidth > 480) {
+        let activeArea = document.querySelector('.active-list');
+        if (event.deltaY > 0) 
+            activeArea.scrollLeft += 40;
+        else 
+            activeArea.scrollLeft -= 40;
+    }
 }

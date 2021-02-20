@@ -3,14 +3,18 @@
 }
 
 .active-list {
+    height: calc(100% + 15px);
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-content: flex-start;
     justify-items: stretch;
-
-    max-height: 60vh;
     overflow-x: auto;
+}
+
+.active-list::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }
 
 .task {
@@ -23,22 +27,23 @@
     padding: 10px;
     margin-bottom: 10px;
     margin-right: 10px;
+
     max-width: 20%;
-    min-width: 300px;
+    min-width: var(--task-min-width);
+}
+
+.task:hover {
+    border-color: black;
 }
 
 .task-name {
     /* Name is growing and delete button displayed at the end without float */
     flex-grow: 2;
-    max-width: 80%;
+    width: 80%;
     overflow-wrap: break-word;
 
     /* necessary magic number */
     padding-top: 1px;
-}
-
-.task:hover {
-    border-color: black;
 }
 
 .task:hover .task-delete-button {
@@ -87,6 +92,50 @@
 
 .complete .task-complete-button {
     color: green;
+}
+
+@media (max-width: 1920px) {
+    .task {
+        min-width: calc((100vw - 2em - 40px)/5);
+    }
+}
+
+@media (min-width: 1024px) {
+    .task {
+        min-width: calc((100vw - 2em - 30px)/4);
+    }
+}
+
+@media (max-width: 1024px) {
+    .task {
+        min-width: calc((100vw - 2em - 20px)/3);
+    }
+}
+
+@media (max-width: 640px) {
+    .task {
+        min-width: calc(50vw - 1em - 5px);
+    }
+}
+
+@media (max-width: 480px) {
+    .task {
+        /* Full width minus left and right margins */
+        min-width: calc(100vw - 2em);
+    }
+
+    .active-list {
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        overflow-x: unset;
+        overflow-y: auto;
+    }
+
+    /* Making scrollbar invisible */
+    ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
 }
 
 @media (max-width: 320px) {
