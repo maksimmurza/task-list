@@ -1,4 +1,4 @@
-import {main, tabs, tabsAreas, addButton, input} from './init.js';
+import {main, tabs, tabsAreas, addButton, input, animationDuration} from './init.js';
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -65,6 +65,10 @@ function deleteTask(event) {
 
 function completeTask(event) {
     event.target.parentNode.classList.toggle('complete');
+    event.target.classList.add('animate-complete');
+    setTimeout(() => {
+        event.target.classList.remove('animate-complete');
+    }, animationDuration);
 }
 
 function scrollHorizontally(event) {

@@ -6,6 +6,7 @@
 :root {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+    --animation-duration: 400ms;
     --task-min-width: 300px;
     --border-margin: 1em;
 }

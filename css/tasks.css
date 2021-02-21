@@ -42,6 +42,8 @@
     width: 80%;
     overflow-wrap: break-word;
 
+    padding-left: 10px;
+
     /* necessary magic number */
     padding-top: 1px;
 }
@@ -74,8 +76,8 @@
 
 .task-complete-button {
     font-size: 120%;
-    padding-left: 0;
-    padding-right: 10px;
+    padding: 0;
+    border-radius: 50%;
 }
 
 .task-complete-button:hover {
@@ -93,6 +95,16 @@
 .complete .task-complete-button {
     color: green;
 }
+
+.animate-complete {
+    animation: pulse var(--animation-duration);
+    box-shadow: 0 0 0 0px green;
+}
+  
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,100,0,1); }
+    100% { box-shadow: 0 0 0 10px rgba(0,100,0,0); }
+}  
 
 @media (max-width: 1920px) {
     .task {
