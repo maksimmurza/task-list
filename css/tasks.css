@@ -36,6 +36,10 @@
     border-color: black;
 }
 
+.drop-area {
+    border: 2px solid black;
+}
+
 .task-name {
     /* Name is growing and delete button displayed at the end without float */
     flex-grow: 2;

@@ -1,5 +1,5 @@
 import {main, tabs, tabsAreas, addButton, input, animationDuration} from './init.js';
-
+let draggableTask;
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
@@ -57,6 +57,12 @@ function addNewTask(event) {
     // Listeners on buttons of newly created task block 
     deleteButton.onclick = (event) => {deleteTask(event)};
     completeButton.onclick = (event) => {completeTask(event)};
+    newTask.ondragstart = (event) => {dragStart(event)};
+    newTask.ondragenter = (event) => {toggleDropArea(event)};
+    newTask.ondragleave = (event) => {toggleDropArea(event)};
+    newTask.ondragend = (event) => {dragEnd(event)};
+    newTask.ondragover = (event) => {event.preventDefault()}; // Valid area for dropping
+    newTask.ondrop = (event) => {drop(event)};
 }
 
 function deleteTask(event) {
@@ -78,5 +84,33 @@ function scrollHorizontally(event) {
             activeArea.scrollLeft += 40;
         else 
             activeArea.scrollLeft -= 40;
+    }
+}
+
+function dragStart(event) {
+    draggableTask = event.target;
+    event.target.parentNode.childNodes.forEach(task => {
+        task.childNodes.forEach(child => {child.style.pointerEvents = 'none'});
+    });
+}
+
+function toggleDropArea(event) {
+    if(event.target != draggableTask) {
+        event.target.classList.toggle('drop-area');
+    }
+}
+
+function dragEnd(event) {
+    // In any case of ending drag we must back buttons functionality
+    event.target.parentNode.childNodes.forEach(task => {
+        task.childNodes.forEach(child => {child.style.pointerEvents = 'initial'});
+    });
+}
+
+function drop(event) {
+    if(event.target != draggableTask) { // prevent error when drop to itself
+        event.target.classList.toggle('drop-area');
+        event.target.parentNode.removeChild(draggableTask);
+        event.target.parentNode.insertBefore(draggableTask, event.target);
     }
 }
