@@ -1,8 +1,20 @@
 import {main, tabs, tabsAreas, addButton, input, animationDuration} from './init.js';
+import {ToDo, Interval, Task} from './init.js';
+
 let draggableTask;
+let todo;
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
+
+    // Making default intervals
+    let today = new Interval('today');
+    let tomorrow = new Interval('tomorrow');
+    let week = new Interval('week');
+    let month = new Interval('month');
+    today.active = true;
+    todo = new ToDo(today, tomorrow, week, month);
+    
     addButton.addEventListener('click', addNewTask);
     tabs.forEach(tab => {tab.addEventListener('click', () => {openTab(tab)})});
     main.addEventListener('wheel', scrollHorizontally);
@@ -18,6 +30,7 @@ function openTab(tab) {
     tab.classList.add('active-tab');
     let activeArea = document.querySelector('.list-'+tab.textContent.toLowerCase());
     activeArea.classList.add('active-list');
+    todo.active(tab);
 }
 
 function addNewTask(event) {
@@ -45,6 +58,13 @@ function addNewTask(event) {
     completeButton.classList.add('task-complete-button', 'far', 'fa-check-circle');
 
     taskName.textContent = input.value;
+    
+    // Add into model and link id
+    // console.log(todo.active.last);
+    todo.active.addTask(input.value);
+    console.dir(todo);
+    // newTask.id = todo.active.last.id;
+    
     input.value = '';
 
     newTask.setAttribute('draggable', true);
@@ -109,8 +129,13 @@ function dragEnd(event) {
 
 function drop(event) {
     if(event.target != draggableTask) { // prevent error when drop to itself
-        event.target.classList.toggle('drop-area');
-        event.target.parentNode.removeChild(draggableTask);
-        event.target.parentNode.insertBefore(draggableTask, event.target);
+        if(true) {
+            event.target.classList.toggle('drop-area');
+            event.target.parentNode.removeChild(draggableTask);
+            event.target.parentNode.insertBefore(draggableTask, event.target);
+        } else {
+
+        }
+        
     }
 }
