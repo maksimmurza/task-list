@@ -10,6 +10,7 @@
     align-content: flex-start;
     justify-items: stretch;
     overflow-x: auto;
+    padding: 15px 0 0;
 }
 
 .active-list::-webkit-scrollbar {
@@ -33,7 +34,10 @@
 }
 
 .task:hover {
-    border-color: black;
+    /* border-color: black; */
+    border-color: white;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.459);
+    transition: all ease 0.2s;
 }
 
 .drop-area {
@@ -71,7 +75,7 @@
     font-family: inherit;
     outline: none;
     color: grey;
-    background-color: white;
+    background-color: transparent;
 }
 
 .task-delete-button:hover {
@@ -141,6 +145,7 @@
     }
 
     .active-list {
+        height: 100%;
         flex-wrap: nowrap;
         scrollbar-width: none;
         overflow-x: unset;

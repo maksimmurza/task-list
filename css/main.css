@@ -42,7 +42,7 @@ main {
     flex-grow: 1;
     flex-shrink: 3;
 
-    padding: 15px 0 15px;
+    padding: 0 0 15px;
     height: 65%;
     position: relative;
 }

@@ -76,7 +76,7 @@ function addNewTask(event, task) {
     newTask.classList.add('task');
     taskName.classList.add('task-name');
     deleteButton.classList.add('task-delete-button', 'fas', 'fa-trash');
-    completeButton.classList.add('task-complete-button', 'far', 'fa-check-circle');
+    completeButton.classList.add('task-complete-button', 'far', 'fa-circle');
 
     if(!task)
         taskName.textContent = input.value;
@@ -147,7 +147,15 @@ function completeTask(event, task) {
     interval.getTask(id).complete(true);
     
     event.target.parentNode.classList.toggle('complete');
-    event.target.classList.add('animate-complete');
+
+    if(event.target.parentNode.classList.contains('complete')) {
+        event.target.classList.remove('fa-circle');
+        event.target.classList.add('animate-complete', 'fa-check-circle');
+    } else {
+        event.target.classList.remove('fa-check-circle');
+        event.target.classList.add('animate-complete', 'fa-circle');
+    }
+
     setTimeout(() => {
         event.target.classList.remove('animate-complete');
     }, animationDuration);
