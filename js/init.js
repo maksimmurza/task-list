@@ -25,7 +25,6 @@ class ToDo {
     // check every valid property and return that active
     get active() {
         for(let prop in this) {
-            console.log(prop);
             if(this[prop] instanceof Interval) {
                 if(this[prop].active == true)
                     return this[prop];
@@ -35,12 +34,12 @@ class ToDo {
 
     // set all in false, than set active
     set active(interval) {
-        for(prop in this) {
-            if(prop instanceof Interval) {
-                prop.active = false;
+        for(let prop in this) {
+            if(this[prop] instanceof Interval) {
+                this[prop].active = false;
             }
         }
-        this[interval].active = true; 
+        this[interval].active = true;
     }
 
     addInterval(interval) {
@@ -61,33 +60,47 @@ class Interval {
     }
 
     get last() {
-        return this.tasks.pop();
+        let index = this.tasks.length;
+        return this.tasks[index-1];
     }
 
-    // set last(last) {
-    //     this.#last = last;
-    // }
-
-    addTask(arg) {
+    addTask(arg, local) {
         if(typeof arg == 'string') {
             let task = new Task(arg);
-
-            console.log(this.last);
-            if(this.last != undefined)
+            if(this.last != undefined) {
                 task.id = this.last.id + 1;
-            else
+            } else {
                 task.id = 0;
-
+            }
+            
+            task.interval = this.name;
             this.tasks.push(task);
+
+            // Adding to the local storage
+            // Checking on source of task. If local, than it's no need to add it to localStorage
+            if(!local) {
+                let localTodo = JSON.parse(localStorage.getItem('todo'));
+                localTodo[this.name].tasks.push(task);
+                localStorage.setItem('todo', JSON.stringify(localTodo));
+            }
         } else {
             console.log('Incorrect format');
         }
     }
 
     deleteTask(taskId) {
+        if(typeof taskId == 'string')
+            taskId = parseInt(taskId);
+
         this.tasks.splice(taskId, 1);
         this.#last--;
         this.refreshId();
+
+        // Delete from the local storage
+        let localTodo = JSON.parse(localStorage.getItem('todo'));
+        localTodo[this.name].tasks = this.tasks;
+        localStorage.setItem('todo', JSON.stringify(localTodo));
+
     }
 
     getTask(arg) {
@@ -99,26 +112,24 @@ class Interval {
     }
 
     move(draggedId, dropedOnId) {
-        let dragged = this.getTask(draggedId);
-        console.log(dragged);
-        if(draggedId > dropedOnId) { // put on top and move others down
-            this.tasks.splice(draggedId, 1);
-            this.tasks = this.tasks.slice(0, dropedOnId)
-                .concat(dragged)
-                .concat(this.tasks.slice(dropedOnId, this.tasks.length));
-        } else if(draggedId < dropedOnId) {
-            this.tasks.splice(draggedId, 1);
-            this.tasks = this.tasks.slice(0, dropedOnId)
-                .concat(dragged)
-                // .concat(this.tasks.slice(dropedOnId, this.tasks.length))
-        }
+        
+        let dragged = this.tasks.splice(draggedId, 1)[0];
+        this.tasks = this.tasks.slice(0, dropedOnId)
+            .concat(dragged)
+            .concat(this.tasks.slice(dropedOnId, this.tasks.length));
+
+
         this.refreshId();
+        // Move in the local storage
+        let localTodo = JSON.parse(localStorage.getItem('todo'));
+        localTodo[this.name].tasks = this.tasks;
+        localStorage.setItem('todo', JSON.stringify(localTodo));
     }
 
     refreshId() {
         this.tasks.forEach((task, index) => {
-            task.id = index+1;
-        })
+            task.id = index;
+        });
     }
 
     
@@ -126,20 +137,21 @@ class Interval {
 
 class Task {
 
-    id;
+    #id;
     textContent;
     completed = false;
+    interval;
 
     constructor(text) {
         this.textContent = text;
     }
 
     get id() {
-        return this.id;
+        return this.#id;
     }
 
     set id(id) {
-        this.id = id;
+        this.#id = id;
     }
 
     edit(newTextContent) {
@@ -147,6 +159,18 @@ class Task {
     }
 
     complete(status) {
-        status ? this.completed = true : this.completed = false;
+
+        // localStorage
+        let localTodo = JSON.parse(localStorage.getItem('todo'));
+
+        if(status) {
+            this.completed = true;
+            localTodo[this.interval].tasks[this.id].completed = true;
+        } else {
+            this.completed = false;
+            localTodo[this.interval].tasks[this.id].completed = false;
+        }
+
+        localStorage.setItem('todo', JSON.stringify(localTodo));
     }
 }
