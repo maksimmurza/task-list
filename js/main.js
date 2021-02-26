@@ -30,6 +30,9 @@ function init() {
     addButton.addEventListener('click', addNewTask);
     tabs.forEach(tab => {tab.addEventListener('click', () => {openTab(tab)})});
     main.addEventListener('wheel', scrollHorizontally);
+
+    document.querySelector('.download-json').onclick = downloadJson;
+    document.querySelector('.upload-json').onclick = uploadJson;
 }
 
 function openTab(tab) {
@@ -212,4 +215,40 @@ function drop(event) {
         // Move elements in model
         todo.active.move(parseInt(draggableTask.id), parseInt(event.target.id));
     }
+}
+
+function downloadJson() {
+    let filename = 'tasks.json'
+    let data = JSON.stringify(todo, null, '\t')
+    
+    let blob = new Blob([data], {type: 'text/json'});
+    let a = document.createElement('a');
+
+    a.download = filename;
+    a.href = window.URL.createObjectURL(blob);
+    a.click();
+}
+
+function uploadJson() {
+
+    let upload = document.querySelector('#select-file');
+    let result;
+
+    upload.addEventListener('change', function() {
+        if (upload.files.length > 0) {    
+            let fileReader = new FileReader();
+
+            fileReader.addEventListener('load', function() {
+                result = JSON.parse(fileReader.result); // Parse the result into an object
+                console.log(result);
+                localStorage.setItem('todo', fileReader.result);
+                init();
+            });
+
+            fileReader.readAsText(upload.files[0]);
+        }
+    });
+
+    upload.click();
+    
 }

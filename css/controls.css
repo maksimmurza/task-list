@@ -44,6 +44,26 @@
     color: black;
 }
 
+.remove-all-button, .download-json, .upload-json {
+    display: inline;
+    cursor: pointer;
+    border: none;
+    font-size: 120%;
+    font-family: inherit;
+    outline: none;
+    color: grey;
+    background-color: transparent;
+}
+
+.remove-all-button:hover {
+    color: firebrick;
+}
+
+.download-json:hover, .upload-json:hover {
+    color: rosybrown;
+}
+
+
 /* media q. in spec. file doesn't work correctly */
 @media (max-width: 320px) {
     .new-task-form {

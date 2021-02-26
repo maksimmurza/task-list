@@ -26,6 +26,10 @@
             <input required type="text" class="task-name-input" placeholder="Add new...">
             <button type="submit" class="add-task-button fas fa-plus"></button>
         </form>
+        <button class="download-json fas fa-file-download"></button>
+        <button class="upload-json fas fa-file-upload"></button>
+        <input type="file" id="select-file" style="display: none;">
+        <button onclick="localStorage.clear();document.location.reload();" title="Remove all" class="remove-all-button fas fa-calendar-times"></button>
     </section>
     <script type="module" src="./js/main.js"></script>
 </body>
