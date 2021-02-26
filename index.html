@@ -7,6 +7,7 @@
     <title>To-Do List</title>
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
 </head>
 <body>
     <nav>
@@ -21,15 +22,17 @@
         <div class="list list-week"></div>
         <div class="list list-month"></div>
     </main>
-    <section class="controls">
+    <section>
         <form  class="new-task-form">
             <input required type="text" class="task-name-input" placeholder="Add new...">
             <button type="submit" class="add-task-button fas fa-plus"></button>
         </form>
-        <button class="download-json fas fa-file-download"></button>
-        <button class="upload-json fas fa-file-upload"></button>
+        <div class="menu">
+            <button title="Download tasks as JSON file" class="download-json lni lni-download"></button>
+            <button title="Upload tasks as JSON file" class="upload-json lni lni-upload"></button>
+            <button onclick="localStorage.clear();document.location.reload();" title="Remove all" class="remove-all-button far fa-trash-alt"></button>
+        </div>
         <input type="file" id="select-file" style="display: none;">
-        <button onclick="localStorage.clear();document.location.reload();" title="Remove all" class="remove-all-button fas fa-calendar-times"></button>
     </section>
     <script type="module" src="./js/main.js"></script>
 </body>

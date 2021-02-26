@@ -53,14 +53,39 @@
     outline: none;
     color: grey;
     background-color: transparent;
+
+    padding: 0 1em 0 0;
 }
 
-.remove-all-button:hover {
-    color: firebrick;
+.download-json {
+    padding: 4px 5px;
+    border: 1px solid transparent;
+    border-radius: 50%;
 }
 
-.download-json:hover, .upload-json:hover {
-    color: rosybrown;
+.upload-json {
+    padding: 4px 5px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+}
+
+.remove-all-button {
+    float: right;
+    padding: 4px 6px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+}
+
+.remove-all-button:hover, .download-json:hover, .upload-json:hover {
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.603);
+    transition: all ease 0.5s;
+}
+
+.menu {
+    width: calc(100vw - 2em);
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
 }
 
 

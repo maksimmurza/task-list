@@ -17,10 +17,11 @@
 
 .tab:hover {
     text-decoration: underline;
+    text-underline-offset: 5px;
 }
 
 .active-tab {
-    text-decoration: underline;
+    border-bottom: none;
 }
 
 .tab-today {
@@ -55,6 +56,16 @@
     .tab-month {
         border-left: 1px solid black;
         border-bottom: none;
+    }
+
+    .tab-month.active-tab {
+        border-bottom: none;
+    }
+    
+    .active-tab {
+        border-bottom: 1px solid black;
+        text-decoration: underline;
+        text-underline-offset: 5px;
     }
 }
 
