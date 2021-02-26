@@ -6,6 +6,7 @@
 :root {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+    --background-color: white;
     --animation-duration: 400ms;
     --task-min-width: 300px;
     --border-margin: 1em;
@@ -25,13 +26,13 @@ body {
     flex-wrap: nowrap;
 
     position: relative;
-    margin: var(--border-margin);
+    margin: var(--border-margin) 0;
     height: calc(100vh - 2em);
 }
 
 nav {
     flex-shrink: 0;
-
+    margin: 0 1em;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap-reverse;

@@ -11,6 +11,9 @@
     justify-items: stretch;
     overflow-x: auto;
     padding: 15px 0 0;
+    
+    margin-left: calc(1em - 10px);
+    margin-right: calc(1em - 10px);
 }
 
 .active-list::-webkit-scrollbar {
@@ -27,7 +30,7 @@
     border-radius: 15px;
     padding: 10px;
     margin-bottom: 10px;
-    margin-right: 10px;
+    margin-left: 10px;
 
     max-width: 20%;
     min-width: var(--task-min-width);
@@ -108,7 +111,14 @@
     animation: pulse var(--animation-duration);
     box-shadow: 0 0 0 0px green;
 }
-  
+
+/* Adding space for correct shadow displaying */
+.list::after {
+    content: "-";
+    color: var(--background-color);
+    margin-left: 50vw;
+}
+
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(0,100,0,1); }
     100% { box-shadow: 0 0 0 10px rgba(0,100,0,0); }

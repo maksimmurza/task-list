@@ -33,6 +33,17 @@ function init() {
 
     document.querySelector('.download-json').onclick = downloadJson;
     document.querySelector('.upload-json').onclick = uploadJson;
+
+    document.querySelector('.active-list').addEventListener('scroll', function() {
+        if(document.querySelector('.active-list').scrollLeft != 0) {
+            document.querySelector('.active-list').style.marginLeft = '1em';
+            document.querySelector('.active-list').style.marginRight = '1em';
+        } else {
+            document.querySelector('.active-list').style.marginLeft = 'calc(1em - 10px)';
+            document.querySelector('.active-list').style.marginRight = 'calc(1em - 10px)';
+        }
+    });
+    
 }
 
 function openTab(tab) {
