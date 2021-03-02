@@ -34,10 +34,11 @@
 
     max-width: 20%;
     min-width: var(--task-min-width);
+
+    transition: all ease 0.4s;
 }
 
 .task:hover {
-    /* border-color: black; */
     border-color: white;
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.459);
     transition: all ease 0.2s;

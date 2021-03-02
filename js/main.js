@@ -1,52 +1,44 @@
-import {main, tabs, tabsAreas, addButton, input, animationDuration} from './init.js';
-import {ToDo, Interval, Task} from './init.js';
+import {todo} from './model.js';
 
-let draggableTask;
-let todo;
+let main = document.querySelector('main'),
+    tabs = document.querySelectorAll('.tab'),
+    addButton = document.querySelector('.add-task-button'),
+    input = document.querySelector('.task-name-input'),
+    animationDuration = parseInt(
+                                    getComputedStyle(document.documentElement)
+                                    .getPropertyValue('--animation-duration')
+                                );
+let activeList, 
+    taskElement, 
+    taskNameElement, 
+    deleteButtonElement, 
+    completeButtonElement, 
+    draggableTask;
+
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
 
-    // Making default intervals
-    let today = new Interval('today');
-    let tomorrow = new Interval('tomorrow');
-    let week = new Interval('week');
-    let month = new Interval('month');
-    today.active = true;
-    todo = new ToDo(today, tomorrow, week, month);
-
-    if(!localStorage.getItem('todo')) {
-        localStorage.setItem('todo', JSON.stringify(todo));
-    } else {
-        let localTodo = JSON.parse(localStorage.getItem('todo'));
-        for (let key in localTodo) {
-            let interval = localTodo[key];
-            interval.tasks.forEach(task => {
-                addNewTask(null, task);
-            });
-        }
+    // Add already existing tasks that we get from local storage
+    for (let key in todo) {
+        let interval = todo[key];
+        interval.tasks.forEach(task => {
+            console.log(todo);
+            addNewTask(null, task);
+        });
     }
     
-    addButton.addEventListener('click', addNewTask);
+    addButton.onclick = addNewTask;
     tabs.forEach(tab => {tab.addEventListener('click', () => {openTab(tab)})});
     main.addEventListener('wheel', scrollHorizontally);
-
     document.querySelector('.download-json').onclick = downloadJson;
     document.querySelector('.upload-json').onclick = uploadJson;
-
-    document.querySelector('.active-list').addEventListener('scroll', function() {
-        if(document.querySelector('.active-list').scrollLeft != 0) {
-            document.querySelector('.active-list').style.marginLeft = '1em';
-            document.querySelector('.active-list').style.marginRight = '1em';
-        } else {
-            document.querySelector('.active-list').style.marginLeft = 'calc(1em - 10px)';
-            document.querySelector('.active-list').style.marginRight = 'calc(1em - 10px)';
-        }
-    });
-    
+    document.querySelector('.active-list').onscroll = (event) => {setMargins(event.target)}
 }
 
 function openTab(tab) {
+
+    // console.log(activeList);
 
     // Making previous tab and it's area inactive
     document.querySelector('.active-tab').classList.remove('active-tab');
@@ -59,6 +51,8 @@ function openTab(tab) {
 
     // Change active tab in model
     todo.active = tab.textContent.toLowerCase();
+
+    document.querySelector('.active-list').onscroll = (event) => {setMargins(event.target)}
 }
 
 function addNewTask(event, task) {
@@ -75,11 +69,10 @@ function addNewTask(event, task) {
     }
 
     // Building html-block for task
-    let newTask = document.createElement('div');
-    let taskName = document.createElement('span');
-    let deleteButton = document.createElement('button');
-    let completeButton = document.createElement('button');
-    let activeList;
+    taskElement = document.createElement('div');
+    taskNameElement = document.createElement('span');
+    deleteButtonElement = document.createElement('button');
+    completeButtonElement = document.createElement('button');
 
     if(!task) {
         activeList = document.querySelector('.active-list');
@@ -87,55 +80,54 @@ function addNewTask(event, task) {
         activeList = document.querySelector('.list-' + task.interval);
     } 
 
-    newTask.classList.add('task');
-    taskName.classList.add('task-name');
-    deleteButton.classList.add('task-delete-button', 'fas', 'fa-trash');
-    completeButton.classList.add('task-complete-button', 'far', 'fa-circle');
+    taskElement.classList.add('task');
+    taskNameElement.classList.add('task-name');
+    deleteButtonElement.classList.add('task-delete-button', 'fas', 'fa-trash');
+    completeButtonElement.classList.add('task-complete-button', 'far', 'fa-circle');
 
     if(!task)
-        taskName.textContent = input.value;
+        taskNameElement.textContent = input.value;
     else
-        taskName.textContent = task.textContent;
+        taskNameElement.textContent = task.textContent;
 
     // Add into model and link id ----------------------------------------------------------------
     if(!task) { // From UI
         todo.active.addTask(input.value);
-        newTask.id = todo.active.last.id;
+        taskElement.id = todo.active.last.id;
     } else { // From localStorage
-        todo[task.interval].addTask(task.textContent, 'local');
-        newTask.id = todo[task.interval].last.id;
+        taskElement.id = todo[task.interval].last.id;
     }
     
     input.value = '';
-    newTask.setAttribute('draggable', true);
+    taskElement.setAttribute('draggable', true);
 
-    newTask.appendChild(completeButton);
-    newTask.appendChild(taskName);
-    newTask.appendChild(deleteButton);
-    activeList.appendChild(newTask);
+    taskElement.appendChild(completeButtonElement);
+    taskElement.appendChild(taskNameElement);
+    taskElement.appendChild(deleteButtonElement);
+    activeList.appendChild(taskElement);
 
     // Listeners on buttons of newly created task block 
-    deleteButton.onclick = (event) => {deleteTask(event)};
-    completeButton.onclick = (event) => {completeTask(event, task)};
-    newTask.ondragstart = (event) => {dragStart(event)};
-    newTask.ondragenter = (event) => {toggleDropArea(event)};
-    newTask.ondragleave = (event) => {toggleDropArea(event)};
-    newTask.ondragend = (event) => {dragEnd(event)};
-    newTask.ondragover = (event) => {event.preventDefault()}; // Valid area for dropping
-    newTask.ondrop = (event) => {drop(event)};
+    deleteButtonElement.onclick = deleteTask;
+    completeButtonElement.onclick = (event) => {completeTask(event, task)};
+    taskElement.ondragstart = (event) => {dragStart(event)};
+    taskElement.ondragenter = (event) => {toggleDropArea(event)};
+    taskElement.ondragleave = (event) => {toggleDropArea(event)};
+    taskElement.ondragend = (event) => {dragEnd(event)};
+    taskElement.ondragover = (event) => {event.preventDefault()}; // Valid area for dropping
+    taskElement.ondrop = (event) => {drop(event)};
 
     // When localStorage task is already comleted
     if(task && task.completed) {
-        completeButton.click(task);
+        completeButtonElement.click(task);
     }
 }
 
-function deleteTask(event) {
+function deleteTask() {
     
     // Remove in model
     todo.active.deleteTask(event.target.parentNode.id);
 
-    event.target.parentNode.remove();
+    this.parentNode.remove();
 
     //refresh id's for next moves
     let id = 0;
@@ -185,6 +177,16 @@ function scrollHorizontally(event) {
     }
 }
 
+function setMargins(activeList) {
+    if(activeList.scrollLeft != 0) {
+        activeList.style.marginLeft = '1em';
+        activeList.style.marginRight = '1em';
+    } else {
+        activeList.style.marginLeft = 'calc(1em - 10px)';
+        activeList.style.marginRight = 'calc(1em - 10px)';
+    }
+}
+
 function dragStart(event) {
     draggableTask = event.target;
     event.target.parentNode.childNodes.forEach(task => {
@@ -195,6 +197,24 @@ function dragStart(event) {
 function toggleDropArea(event) {
     if(event.target != draggableTask) {
         event.target.classList.toggle('drop-area');
+    }
+}
+
+function drop(event) {
+    let dropAreaTask = event.target;
+
+    if(!draggableTask.isSameNode(dropedOn)) { // prevent error when drop to itself
+        dropAreaTask.classList.toggle('drop-area');
+        dropedOn.parentNode.removeChild(draggableTask);
+
+        if(draggableTask.id > dropAreaTask.id) {
+            dropedOn.parentNode.insertBefore(draggableTask, dropAreaTask);
+        } else {
+            dropedOn.parentNode.insertBefore(draggableTask, dropAreaTask.nextSibling);
+        }
+
+        // Move elements in model
+        todo.active.move(parseInt(draggableTask.id), parseInt(dropAreaTask.id));
     }
 }
 
@@ -211,37 +231,17 @@ function dragEnd(event) {
     });
 }
 
-function drop(event) {
-    if(!draggableTask.isSameNode(event.target)) { // prevent error when drop to itself
-
-        event.target.classList.toggle('drop-area');
-        event.target.parentNode.removeChild(draggableTask);
-
-        if(draggableTask.id > event.target.id) {
-            event.target.parentNode.insertBefore(draggableTask, event.target);
-        } else {
-            event.target.parentNode.insertBefore(draggableTask, event.target.nextSibling);
-        }
-
-        // Move elements in model
-        todo.active.move(parseInt(draggableTask.id), parseInt(event.target.id));
-    }
-}
-
 function downloadJson() {
-    let filename = 'tasks.json'
+    let fileName = 'tasks.json'
     let data = JSON.stringify(todo, null, '\t')
-    
     let blob = new Blob([data], {type: 'text/json'});
     let a = document.createElement('a');
-
-    a.download = filename;
+    a.download = fileName;
     a.href = window.URL.createObjectURL(blob);
     a.click();
 }
 
 function uploadJson() {
-
     let upload = document.querySelector('#select-file');
     let result;
 
@@ -255,11 +255,8 @@ function uploadJson() {
                 localStorage.setItem('todo', fileReader.result);
                 init();
             });
-
             fileReader.readAsText(upload.files[0]);
         }
     });
-
     upload.click();
-    
 }
