@@ -2,8 +2,11 @@ import {todo} from './model.js';
 
 let main = document.querySelector('main'),
     tabs = document.querySelectorAll('.tab'),
+    areas =  document.querySelectorAll('.list'),
     addButton = document.querySelector('.add-task-button'),
     input = document.querySelector('.task-name-input'),
+    downloadJSON = document.querySelector('.download-json'),
+    uploadJSON = document.querySelector('.upload-json'),
     animationDuration = parseInt(
                                     getComputedStyle(document.documentElement)
                                     .getPropertyValue('--animation-duration')
@@ -19,151 +22,128 @@ document.addEventListener('DOMContentLoaded', init);
 
 function init() {
 
-    // Add already existing tasks that we get from local storage
+    // Add already existed in localStorage tasks to UI
     for (let key in todo) {
         let interval = todo[key];
         interval.tasks.forEach(task => {
-            console.log(todo);
-            addNewTask(null, task);
+            addTask(null, task);
         });
     }
+
+    console.log(todo);
     
-    addButton.onclick = addNewTask;
-    tabs.forEach(tab => {tab.addEventListener('click', () => {openTab(tab)})});
+    // Listeners on default elements
     main.addEventListener('wheel', scrollHorizontally);
-    document.querySelector('.download-json').onclick = downloadJson;
-    document.querySelector('.upload-json').onclick = uploadJson;
-    document.querySelector('.active-list').onscroll = (event) => {setMargins(event.target)}
+    tabs.forEach(tab => {tab.addEventListener('click', () => {openTab(tab)})});
+    areas.forEach(area => {area.onscroll = setMargins});
+    downloadJSON.onclick = downloadJson;
+    uploadJSON.onclick = uploadJson;
+    addButton.onclick = addTask;
 }
 
 function openTab(tab) {
 
-    // console.log(activeList);
+    // Change active tab in model
+    todo.active = tab.textContent;
 
-    // Making previous tab and it's area inactive
+    // View
     document.querySelector('.active-tab').classList.remove('active-tab');
-    document.querySelector('.active-list').classList.remove('active-list');
-
-    // Making pressed tab and it's area active
     tab.classList.add('active-tab');
+
+    document.querySelector('.active-list').classList.remove('active-list');
     let activeArea = document.querySelector('.list-'+tab.textContent.toLowerCase());
     activeArea.classList.add('active-list');
-
-    // Change active tab in model
-    todo.active = tab.textContent.toLowerCase();
-
-    document.querySelector('.active-list').onscroll = (event) => {setMargins(event.target)}
 }
 
-function addNewTask(event, task) {
+function addTask(event, localTask) {
 
-    // Prevent reloading with novalidate or html validation message after adding new task
-    if(event)
-        event.preventDefault();
+    // Prevent reloading (form)
+    if(event) event.preventDefault();
 
-    // Checking on empty field and string contains spaces only
-    if(!input.validity.valid && !input.value.replace(/\s/g, '').length && !task) {
+    // Validation
+    if(!input.validity.valid && !input.value.replace(/\s/g, '').length && !localTask) {
         alert("Name can not be empty and must have a characters");
         input.value = '';
         return;
     }
 
-    // Building html-block for task
+    // Creating HTML
     taskElement = document.createElement('div');
     taskNameElement = document.createElement('span');
     deleteButtonElement = document.createElement('button');
     completeButtonElement = document.createElement('button');
-
-    if(!task) {
-        activeList = document.querySelector('.active-list');
-    } else {
-        activeList = document.querySelector('.list-' + task.interval);
-    } 
 
     taskElement.classList.add('task');
     taskNameElement.classList.add('task-name');
     deleteButtonElement.classList.add('task-delete-button', 'fas', 'fa-trash');
     completeButtonElement.classList.add('task-complete-button', 'far', 'fa-circle');
 
-    if(!task)
+    if(localTask) { // From localStorage
+        activeList = document.querySelector('.list-' + localTask.interval);
+        taskNameElement.textContent = localTask.textContent;
+        taskElement.id = localTask.id;
+        if(localTask.completed) {
+            taskElement.classList.add('complete');
+            completeButtonElement.classList.remove('fa-circle');
+            completeButtonElement.classList.add('fa-check-circle');
+        }
+    } else {        // From UI
+        activeList = document.querySelector('.active-list');
         taskNameElement.textContent = input.value;
-    else
-        taskNameElement.textContent = task.textContent;
-
-    // Add into model and link id ----------------------------------------------------------------
-    if(!task) { // From UI
         todo.active.addTask(input.value);
         taskElement.id = todo.active.last.id;
-    } else { // From localStorage
-        taskElement.id = todo[task.interval].last.id;
+        input.value = '';
     }
     
-    input.value = '';
-    taskElement.setAttribute('draggable', true);
-
+    // Structuring HTML
     taskElement.appendChild(completeButtonElement);
     taskElement.appendChild(taskNameElement);
     taskElement.appendChild(deleteButtonElement);
     activeList.appendChild(taskElement);
+    taskElement.setAttribute('draggable', true);
 
-    // Listeners on buttons of newly created task block 
+    // Listeners
     deleteButtonElement.onclick = deleteTask;
-    completeButtonElement.onclick = (event) => {completeTask(event, task)};
+    completeButtonElement.onclick = completeTask;
     taskElement.ondragstart = (event) => {dragStart(event)};
     taskElement.ondragenter = (event) => {toggleDropArea(event)};
     taskElement.ondragleave = (event) => {toggleDropArea(event)};
     taskElement.ondragend = (event) => {dragEnd(event)};
     taskElement.ondragover = (event) => {event.preventDefault()}; // Valid area for dropping
     taskElement.ondrop = (event) => {drop(event)};
-
-    // When localStorage task is already comleted
-    if(task && task.completed) {
-        completeButtonElement.click(task);
-    }
 }
 
 function deleteTask() {
     
     // Remove in model
-    todo.active.deleteTask(event.target.parentNode.id);
+    todo.active.deleteTask(this.parentNode.id);
 
+    // Update view
     this.parentNode.remove();
-
-    //refresh id's for next moves
-    let id = 0;
-    document.querySelector('.active-list').childNodes.forEach(task => {
-        task.id = id++; 
+    document.querySelector('.active-list').childNodes.forEach((task, i) => {
+        task.id = i; 
     });
 }
 
-function completeTask(event, task) {
+function completeTask() {
 
-    let interval;
+    // Complete in model
+    todo.active.getTask(this.parentNode.id).complete();
 
-    if(task) {
-        interval = todo[task.interval];
+    // Update view
+    this.parentNode.classList.toggle('complete');
+
+    if(this.parentNode.classList.contains('complete')) {
+        this.classList.remove('fa-circle');
+        this.classList.add('animate-complete', 'fa-check-circle');
     } else {
-        interval = todo.active;
+        this.classList.remove('fa-check-circle');
+        this.classList.add('animate-complete', 'fa-circle');
     }
 
-    // Complete task in model
-    let id = parseInt(event.target.parentNode.id);
-    event.target.parentNode.classList.contains('complete') ?
-    interval.getTask(id).complete(false) :
-    interval.getTask(id).complete(true);
-    
-    event.target.parentNode.classList.toggle('complete');
-
-    if(event.target.parentNode.classList.contains('complete')) {
-        event.target.classList.remove('fa-circle');
-        event.target.classList.add('animate-complete', 'fa-check-circle');
-    } else {
-        event.target.classList.remove('fa-check-circle');
-        event.target.classList.add('animate-complete', 'fa-circle');
-    }
-
+    // Animation
     setTimeout(() => {
-        event.target.classList.remove('animate-complete');
+        this.classList.remove('animate-complete');
     }, animationDuration);
 }
 
@@ -177,13 +157,13 @@ function scrollHorizontally(event) {
     }
 }
 
-function setMargins(activeList) {
-    if(activeList.scrollLeft != 0) {
-        activeList.style.marginLeft = '1em';
-        activeList.style.marginRight = '1em';
+function setMargins() {
+    if(this.scrollLeft != 0) {
+        this.style.marginLeft = '1em';
+        this.style.marginRight = '1em';
     } else {
-        activeList.style.marginLeft = 'calc(1em - 10px)';
-        activeList.style.marginRight = 'calc(1em - 10px)';
+        this.style.marginLeft = 'calc(1em - 10px)';
+        this.style.marginRight = 'calc(1em - 10px)';
     }
 }
 
