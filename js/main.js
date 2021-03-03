@@ -105,12 +105,12 @@ function addTask(event, localTask) {
     // Listeners
     deleteButtonElement.onclick = deleteTask;
     completeButtonElement.onclick = completeTask;
-    taskElement.ondragstart = (event) => {dragStart(event)};
-    taskElement.ondragenter = (event) => {toggleDropArea(event)};
-    taskElement.ondragleave = (event) => {toggleDropArea(event)};
-    taskElement.ondragend = (event) => {dragEnd(event)};
+    taskElement.ondragstart = dragStart;
+    taskElement.ondragenter = toggleDropArea;
+    taskElement.ondragleave = toggleDropArea;
+    taskElement.ondragend = dragEnd;
     taskElement.ondragover = (event) => {event.preventDefault()}; // Valid area for dropping
-    taskElement.ondrop = (event) => {drop(event)};
+    taskElement.ondrop = drop;
 }
 
 function deleteTask() {
@@ -167,47 +167,48 @@ function setMargins() {
     }
 }
 
-function dragStart(event) {
-    draggableTask = event.target;
-    event.target.parentNode.childNodes.forEach(task => {
+function dragStart() {
+    draggableTask = this;
+    this.parentNode.childNodes.forEach(task => {
         task.childNodes.forEach(child => {child.style.pointerEvents = 'none'});
     });
 }
 
-function toggleDropArea(event) {
-    if(event.target != draggableTask) {
-        event.target.classList.toggle('drop-area');
+function toggleDropArea() {
+    if(this != draggableTask) {
+        this.classList.toggle('drop-area');
     }
 }
 
-function drop(event) {
-    let dropAreaTask = event.target;
+function drop() {
+    let dropAreaTask = this;
 
-    if(!draggableTask.isSameNode(dropedOn)) { // prevent error when drop to itself
-        dropAreaTask.classList.toggle('drop-area');
-        dropedOn.parentNode.removeChild(draggableTask);
-
-        if(draggableTask.id > dropAreaTask.id) {
-            dropedOn.parentNode.insertBefore(draggableTask, dropAreaTask);
-        } else {
-            dropedOn.parentNode.insertBefore(draggableTask, dropAreaTask.nextSibling);
-        }
+    if(!draggableTask.isSameNode(this)) {
 
         // Move elements in model
         todo.active.move(parseInt(draggableTask.id), parseInt(dropAreaTask.id));
+
+        // Update view
+        dropAreaTask.classList.toggle('drop-area');
+        this.parentNode.removeChild(draggableTask);
+
+        if(parseInt(draggableTask.id) > parseInt(dropAreaTask.id)) {
+            this.parentNode.insertBefore(draggableTask, dropAreaTask);
+        } else {
+            this.parentNode.insertBefore(draggableTask, dropAreaTask.nextSibling);
+        }
     }
 }
 
-function dragEnd(event) {
+function dragEnd() {
     // In any case of ending drag we must back buttons functionality
-    event.target.parentNode.childNodes.forEach(task => {
+    this.parentNode.childNodes.forEach(task => {
         task.childNodes.forEach(child => {child.style.pointerEvents = 'initial'});
     });
 
     //refresh id's for next moves
-    let id = 0;
-    event.target.parentNode.childNodes.forEach(task => {
-        task.id = id++; 
+    document.querySelector('.active-list').childNodes.forEach((task, i) => {
+        task.id = i;
     });
 }
 

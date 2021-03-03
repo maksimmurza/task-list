@@ -41,11 +41,12 @@
 .task:hover {
     border-color: white;
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.459);
-    transition: all ease 0.2s;
+    transition: all ease 0.4s;
 }
 
 .drop-area {
     border: 2px solid black;
+    transition: none;
 }
 
 .task-name {

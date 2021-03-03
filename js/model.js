@@ -120,12 +120,13 @@ class Interval {
     move(draggedId, dropedOnId) {
         
         let dragged = this.tasks.splice(draggedId, 1)[0];
+
         this.tasks = this.tasks.slice(0, dropedOnId)
             .concat(dragged)
             .concat(this.tasks.slice(dropedOnId, this.tasks.length));
 
-
         this.refreshId();
+        
         // Move in the local storage
         let localTodo = JSON.parse(localStorage.getItem('todo'));
         localTodo[this.name].tasks = this.tasks;
