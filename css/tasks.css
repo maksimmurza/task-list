@@ -61,18 +61,18 @@
     padding-top: 1px;
 }
 
-.task:hover .task-delete-button {
+.task:hover .task-delete-button, .task:hover .task-edit-button {
     visibility: visible;
 }
 
-.task-delete-button {
+.task-delete-button, .task-edit-button {
     visibility: hidden;
 
     /* another necessary magic number  */
     padding-top: 2px;
 }
 
-.task-delete-button, .task-complete-button {
+.task-delete-button, .task-complete-button, .task-edit-button, .apply-edits {
     display: inline;
     cursor: pointer;
     border: none;
@@ -85,6 +85,14 @@
 
 .task-delete-button:hover {
     color: firebrick;
+}
+
+.task-edit-button:hover {
+    color:cadetblue;
+}
+
+.apply-edits:hover {
+    color:chartreuse;
 }
 
 .task-complete-button {
@@ -112,6 +120,17 @@
 .animate-complete {
     animation: pulse var(--animation-duration);
     box-shadow: 0 0 0 0px green;
+}
+
+.edit-field {
+    border: none;
+    outline: none;
+    font-size: 1em;
+    flex-grow: 2;
+    width: 80%;
+    overflow-wrap: break-word;
+    padding-left: 10px;
+    padding-top: 1px;
 }
 
 /* Adding space for correct shadow displaying */

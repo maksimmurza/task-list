@@ -14,7 +14,8 @@ let main = document.querySelector('main'),
 let activeList, 
     taskElement, 
     taskNameElement, 
-    deleteButtonElement, 
+    deleteButtonElement,
+    editButtonElement, 
     completeButtonElement, 
     draggableTask;
 
@@ -71,11 +72,13 @@ function addTask(event, localTask) {
     taskElement = document.createElement('div');
     taskNameElement = document.createElement('span');
     deleteButtonElement = document.createElement('button');
+    editButtonElement = document.createElement('button');
     completeButtonElement = document.createElement('button');
 
     taskElement.classList.add('task');
     taskNameElement.classList.add('task-name');
     deleteButtonElement.classList.add('task-delete-button', 'fas', 'fa-trash');
+    editButtonElement.classList.add('task-edit-button', 'fas', 'fa-edit');
     completeButtonElement.classList.add('task-complete-button', 'far', 'fa-circle');
 
     if(localTask) { // From localStorage
@@ -98,12 +101,14 @@ function addTask(event, localTask) {
     // Structuring HTML
     taskElement.appendChild(completeButtonElement);
     taskElement.appendChild(taskNameElement);
+    taskElement.appendChild(editButtonElement);
     taskElement.appendChild(deleteButtonElement);
     activeList.appendChild(taskElement);
     taskElement.setAttribute('draggable', true);
 
     // Listeners
     deleteButtonElement.onclick = deleteTask;
+    editButtonElement.onclick = editTask;
     completeButtonElement.onclick = completeTask;
     taskElement.ondragstart = dragStart;
     taskElement.ondragenter = toggleDropArea;
@@ -111,6 +116,35 @@ function addTask(event, localTask) {
     taskElement.ondragend = dragEnd;
     taskElement.ondragover = (event) => {event.preventDefault()}; // Valid area for dropping
     taskElement.ondrop = drop;
+}
+
+function editTask() {
+    let task = this.parentNode;
+    let taskNameElement = task.querySelector('.task-name');
+    let taskText = taskNameElement.textContent;
+    let editField = document.createElement('input');
+    editField.type = 'text';
+    editField.value = taskText;
+    editField.autofocus = 'true';
+    editField.classList.add('edit-field');
+    task.replaceChild(editField, taskNameElement);
+
+    let [deleteButton, editButton] = [task.querySelector('.task-delete-button'), task.querySelector('.task-edit-button')];
+    task.removeChild(deleteButton);
+    task.removeChild(editButton);
+    let applyChangesButton = document.createElement('button');
+    applyChangesButton.classList.add('apply-edits', 'fas', 'fa-check');
+    task.appendChild(applyChangesButton);
+    
+    applyChangesButton.onclick = () => {
+        todo.active.getTask(task.id).edit(editField.value);
+        taskNameElement.textContent = editField.value;
+        task.removeChild(editField);
+        task.removeChild(applyChangesButton);
+        task.appendChild(taskNameElement);
+        task.appendChild(editButton);
+        task.appendChild(deleteButton);
+    }
 }
 
 function deleteTask() {

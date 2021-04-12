@@ -164,6 +164,11 @@ class Task {
 
     edit(newTextContent) {
         this.textContent = newTextContent;
+
+        // localStorage
+        let localTodo = JSON.parse(localStorage.getItem('todo'));
+        localTodo[this.interval].tasks[this.id].textContent = newTextContent;
+        localStorage.setItem('todo', JSON.stringify(localTodo));
     }
 
     complete() {
