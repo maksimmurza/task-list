@@ -25,66 +25,58 @@
 }
 
 .tab-today {
-    flex-basis: 1%;
-    flex-grow: 1;
+    /* flex-grow: 1; */
     text-align: center;
-    flex-shrink: 3;
+    /* flex-shrink: 3; */
 }
 
 .tab-tomorrow {
-    flex-basis: 1%;
-    flex-grow: 1;
+    /* flex-grow: 1; */
     text-align: center;
-    flex-shrink: 3;
+    /* flex-shrink: 3; */
 }
 
 .tab-week {
-    flex-basis: 130px;
-    text-align: right;
-    flex-grow: 3;
-    flex-shrink: 2;
+    text-align: center;
+    /* flex-grow: 3; */
+    /* flex-shrink: 2; */
 }
 
 .tab-month {
-    text-align: right;
-    flex-grow: 5;
-    flex-basis: 320px;
-    flex-shrink: 1;
+    text-align: center;
+    /* flex-grow: 5; */
+    /* flex-shrink: 1; */
 }
 
-@media (max-width: 640px) {
-    .tab-month {
-        border-left: 1px solid black;
-        border-bottom: none;
-    }
+nav::after {
+    content: " ";
+    border: 1px solid black;
+    /* border-top: none; */
+    /* border-right: none; */
+    border-left: none;
+    flex-grow: 5;
+}
 
-    .tab-month.active-tab {
-        border-bottom: none;
-    }
-    
-    .active-tab {
-        border-bottom: 1px solid black;
-        text-decoration: underline;
-        text-underline-offset: 5px;
+ @media (max-width: 640px) {
+    nav::after {
+        border-top: none;
+        border-right: none;
     }
 }
 
 @media (max-width: 320px) {
-    .tab-week {
-        border-left: 1px solid black;
-        border-bottom: none;
-    }
-}
-
-@media (max-width: 190px) {
-    .tab-tomorrow {
-        border-left: 1px solid black;
-        border-bottom: none;
-        text-align: left;
+    nav::after {
+        display: none;
+        content: " ";
+        border: 1px solid black;
+        border-left: none;
+        flex-grow: 5;
     }
 
-    .tab-today, .tab-month, .tab-week {
-        text-align: left;
+    .tab-month, .tab-today, .tab-tomorrow, .tab-week {
+        flex-grow: 1;
+        border: 1px solid black;
     }
+    
 }
 
