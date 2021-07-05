@@ -1,82 +1,87 @@
 .tab {
-    cursor: pointer;
-    border: 1px solid black;
-    font-size: 100%;
-    font-family: inherit;
-    outline: none;
-    
-    background-color: transparent;
-    color: black;
-    font-weight: 600;
-    padding: 10px;
+	cursor: pointer;
+	border: 1px solid black;
+	font-size: 100%;
+	font-family: inherit;
+	outline: none;
+
+	background-color: transparent;
+	color: black;
+	font-weight: 600;
+	padding: 10px;
 }
 
 .tab + * {
-    border-left: none;
+	border-left: none;
+}
+
+.tab.drop-area {
+	background-color: ghostwhite;
 }
 
 .tab:hover {
-    text-decoration: underline;
-    text-underline-offset: 5px;
+	text-decoration: underline;
+	text-underline-offset: 5px;
 }
 
 .active-tab {
-    border-bottom: none;
+	border-bottom: none;
 }
 
-.tab-today {
-    /* flex-grow: 1; */
-    text-align: center;
-    /* flex-shrink: 3; */
+#tab-today {
+	/* flex-grow: 1; */
+	text-align: center;
+	/* flex-shrink: 3; */
 }
 
-.tab-tomorrow {
-    /* flex-grow: 1; */
-    text-align: center;
-    /* flex-shrink: 3; */
+#tab-tomorrow {
+	/* flex-grow: 1; */
+	text-align: center;
+	/* flex-shrink: 3; */
 }
 
-.tab-week {
-    text-align: center;
-    /* flex-grow: 3; */
-    /* flex-shrink: 2; */
+#tab-week {
+	text-align: center;
+	/* flex-grow: 3; */
+	/* flex-shrink: 2; */
 }
 
-.tab-month {
-    text-align: center;
-    /* flex-grow: 5; */
-    /* flex-shrink: 1; */
+#tab-month {
+	text-align: center;
+	/* flex-grow: 5; */
+	/* flex-shrink: 1; */
 }
 
 nav::after {
-    content: " ";
-    border: 1px solid black;
-    /* border-top: none; */
-    /* border-right: none; */
-    border-left: none;
-    flex-grow: 5;
+	content: " ";
+	border: 1px solid black;
+	/* border-top: none; */
+	/* border-right: none; */
+	border-left: none;
+	flex-grow: 5;
 }
 
- @media (max-width: 640px) {
-    nav::after {
-        border-top: none;
-        border-right: none;
-    }
+@media (max-width: 640px) {
+	nav::after {
+		border-top: none;
+		border-right: none;
+	}
 }
 
 @media (max-width: 320px) {
-    nav::after {
-        display: none;
-        content: " ";
-        border: 1px solid black;
-        border-left: none;
-        flex-grow: 5;
-    }
+	nav::after {
+		display: none;
+		content: " ";
+		border: 1px solid black;
+		border-left: none;
+		flex-grow: 5;
+	}
 
-    .tab-month, .tab-today, .tab-tomorrow, .tab-week {
-        flex-grow: 1;
-        border: 1px solid black;
-    }
-    
+	#tab-month,
+	#tab-today,
+	#tab-tomorrow,
+	#tab-week {
+		flex-grow: 1;
+		border: 1px solid black;
+	}
 }
-

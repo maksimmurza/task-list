@@ -44,7 +44,7 @@
     transition: all ease 0.4s;
 }
 
-.drop-area {
+.task.drop-area {
     border: 2px solid black;
     transition: none;
 }

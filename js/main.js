@@ -17,7 +17,8 @@ let activeList,
     deleteButtonElement,
     editButtonElement, 
     completeButtonElement, 
-    draggableTask;
+    draggableTask,
+    dropArea;
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -35,7 +36,13 @@ function init() {
     
     // Listeners on default elements
     main.addEventListener('wheel', scrollHorizontally);
-    tabs.forEach(tab => {tab.addEventListener('click', () => {openTab(tab)})});
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {openTab(tab)})
+        tab.ondragenter = toggleDropArea;
+        tab.ondragleave = toggleDropArea;
+        tab.ondragover = (event) => {event.preventDefault()}; // Valid area for dropping
+        tab.ondrop = drop;
+    });
     areas.forEach(area => {area.onscroll = setMargins});
     downloadJSON.onclick = downloadJson;
     uploadJSON.onclick = uploadJson;
@@ -209,27 +216,33 @@ function dragStart() {
 }
 
 function toggleDropArea() {
-    if(this != draggableTask) {
+    if(this != draggableTask && !this.classList.contains('active-tab')) {
         this.classList.toggle('drop-area');
     }
 }
 
 function drop() {
-    let dropAreaTask = this;
-
-    if(!draggableTask.isSameNode(this)) {
+    dropArea = this;
+    if(dropArea.id.startsWith('tab') && !dropArea.classList.contains('active-tab')) {
+        const interval = dropArea.id.split('-')[1];
+        const taskObject =  todo.active.getTask(draggableTask.id);
+        todo[interval].addTask(taskObject.textContent, taskObject.completed);
+        todo.active.deleteTask(draggableTask.id);
+        document.querySelector('.active-list').removeChild(draggableTask);
+        document.querySelector(`.list-${interval}`).appendChild(draggableTask);
+        dropArea.classList.toggle('drop-area');
+    } else if(dropArea.classList.contains('task') && !draggableTask.isSameNode(this)) {
 
         // Move elements in model
-        todo.active.move(parseInt(draggableTask.id), parseInt(dropAreaTask.id));
+        todo.active.move(draggableTask.id, dropArea.id);
 
         // Update view
-        dropAreaTask.classList.toggle('drop-area');
+        dropArea.classList.toggle('drop-area');
         this.parentNode.removeChild(draggableTask);
-
-        if(parseInt(draggableTask.id) > parseInt(dropAreaTask.id)) {
-            this.parentNode.insertBefore(draggableTask, dropAreaTask);
+        if(parseInt(draggableTask.id) > parseInt(dropArea.id)) {
+            this.parentNode.insertBefore(draggableTask, dropArea);
         } else {
-            this.parentNode.insertBefore(draggableTask, dropAreaTask.nextSibling);
+            this.parentNode.insertBefore(draggableTask, dropArea.nextSibling);
         }
     }
 }
@@ -244,6 +257,16 @@ function dragEnd() {
     document.querySelector('.active-list').childNodes.forEach((task, i) => {
         task.id = i;
     });
+    
+    if(dropArea.id.startsWith('tab')) {
+        document.querySelector('.active-list').childNodes.forEach(task => {
+            task.childNodes.forEach(child => {child.style.pointerEvents = 'initial'});
+        });
+
+        document.querySelector('.list-' + dropArea.id.split('-')[1]).childNodes.forEach((task, i) => {
+            task.id = i;
+        });
+    }
 }
 
 function downloadJson() {
