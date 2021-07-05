@@ -208,8 +208,10 @@ function setMargins() {
     }
 }
 
-function dragStart() {
+function dragStart(e) {
     draggableTask = this;
+    const dragImage = document.createElement('i');
+    e.dataTransfer.setDragImage(dragImage, 0, 0);  
     this.parentNode.childNodes.forEach(task => {
         task.childNodes.forEach(child => {child.style.pointerEvents = 'none'});
     });

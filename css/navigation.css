@@ -1,22 +1,18 @@
 .tab {
 	cursor: pointer;
-	border: 1px solid black;
+	border: none;
+	border-bottom: 1px solid black;
 	font-size: 100%;
 	font-family: inherit;
 	outline: none;
-
+	text-align: center;
 	background-color: transparent;
 	color: black;
-	font-weight: 600;
 	padding: 10px;
 }
 
-.tab + * {
-	border-left: none;
-}
-
 .tab.drop-area {
-	background-color: ghostwhite;
+	font-weight: 600;
 }
 
 .tab:hover {
@@ -25,56 +21,21 @@
 }
 
 .active-tab {
+	border: 1px solid black;
 	border-bottom: none;
 }
 
-#tab-today {
-	/* flex-grow: 1; */
-	text-align: center;
-	/* flex-shrink: 3; */
-}
-
-#tab-tomorrow {
-	/* flex-grow: 1; */
-	text-align: center;
-	/* flex-shrink: 3; */
-}
-
-#tab-week {
-	text-align: center;
-	/* flex-grow: 3; */
-	/* flex-shrink: 2; */
-}
-
-#tab-month {
-	text-align: center;
-	/* flex-grow: 5; */
-	/* flex-shrink: 1; */
-}
-
-nav::after {
+nav::after, nav::before {
 	content: " ";
-	border: 1px solid black;
-	/* border-top: none; */
-	/* border-right: none; */
+	border-bottom: 1px solid black;
 	border-left: none;
+	flex-basis: 0;
 	flex-grow: 5;
 }
 
-@media (max-width: 640px) {
-	nav::after {
-		border-top: none;
-		border-right: none;
-	}
-}
-
 @media (max-width: 320px) {
-	nav::after {
+	nav::after, nav::before {
 		display: none;
-		content: " ";
-		border: 1px solid black;
-		border-left: none;
-		flex-grow: 5;
 	}
 
 	#tab-month,
@@ -82,6 +43,6 @@ nav::after {
 	#tab-tomorrow,
 	#tab-week {
 		flex-grow: 1;
-		border: 1px solid black;
+		border: none;
 	}
 }
